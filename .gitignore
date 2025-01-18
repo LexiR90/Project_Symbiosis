@@ -1,0 +1,43 @@
+# Android (Base Template)
+*.iml # Android Studio project files
+build/ # Gradle build output
+*.apk # Compiled Android apps
+local.properties # Local project configuration
+*.keystore # Keystore files (sensitive)
+
+# Node.js (JavaScript)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.pnpm-trace.log*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.python-version
+env/
+venv/
+ENV/
+.venv/
+*.egg-info
+.coverage
+*.swp
+
+# Kotlin
+*.class
+*.jar
+*.war
+*.ear
+*.hprof
+.idea/
+out/ # Gradle build output (alternative)
+.gradle/
+# Other Kotlin ignores... (same as before)
+
+# Project-Specific (Manual Additions)
+config.ini # Example config file
+data/ # Example data directory
