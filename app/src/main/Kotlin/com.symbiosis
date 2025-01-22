@@ -1,0 +1,163 @@
+package com.symbiosis // Updated package name
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+import com.google.api.client.http.javanet.NetHttpTransport
+import com.google.api.client.json.jackson2.JacksonFactory
+import com.google.api.services.drive.Drive
+import kotlinx.coroutines.*
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import java.io.File
+import java.io.FileReader
+import java.time.LocalDateTime
+
+// Configuration (consider moving to a separate configuration file)
+private const val KEY_FILE_PATH_ENV_VAR = "GOOGLE_APPLICATION_CREDENTIALS"
+private const val PROJECT_BASE_NAME = "project_data"
+private const val PROJECT_FILE_PATTERN = "$PROJECT_BASE_NAME*.json"
+private const val SCOPES = "https://www.googleapis.com/auth/drive"
+
+// Data Classes
+data class ProjectData(
+    val projectName: String,
+    val version: String,
+    val lastUpdated: String,
+    val projectGoals: List<String>
+)
+
+data class TerminalOutput(
+    val output: String,
+    val timestamp: LocalDateTime = LocalDateTime.now(),
+    val color: String? = null // Consider using an enum for colors
+)
+
+data class TerminalInput(
+    val input: String,
+    val timestamp: LocalDateTime = LocalDateTime.now()
+)
+
+// Terminal Window (consider renaming to Terminal or Console)
+class Terminal {
+    private val outputLog = mutableListOf<TerminalOutput>()
+    private val inputLog = mutableListOf<TerminalInput>()
+
+    fun addOutput(output: String, color: String? = null) {
+        outputLog.add(TerminalOutput(output, color = color))
+        println(output) // Direct output to the console
+    }
+
+    fun addInput(input: String) {
+        inputLog.add(TerminalInput(input))
+        println(input) // Direct input to the console
+    }
+
+    // ... (other methods for log retrieval, clearing, etc.)
+}
+
+// Command Handler
+class CommandHandler(private val terminal: Terminal) {
+    fun handleCommand(command: String, projectData: ProjectData?) {
+        val parts = command.split(" ")
+        val commandName = parts[0].lowercase()
+        val commandArgs = parts.drop(1)
+
+        when (commandName) {
+            "show" -> handleShowCommand(commandArgs, projectData)
+            "help" -> terminal.addOutput("Available commands: show, exit, list, clear, help")
+            "list" -> { /* Add file listing logic here */ }
+            "clear" -> {
+                terminal.clearOutputLog()
+                terminal.clearInputLog()
+                terminal.addOutput("Cleared terminal")
+            }
+            else -> terminal.addOutput("Unknown command: $command")
+        }
+    }
+
+    private fun handleShowCommand(args: List<String>, projectData: ProjectData?) {
+        if (args.size == 1) {
+            val field = args[0].lowercase()
+            when (field) {
+                "project_name" -> terminal.addOutput("Project Name: ${projectData?.projectName}")
+                "version" -> terminal.addOutput("Version: ${projectData?.version}")
+                "last_updated" -> terminal.addOutput("Last Updated: ${projectData?.lastUpdated}")
+                "project_goals" -> terminal.addOutput("Project Goals: ${projectData?.projectGoals?.joinToString(", ")}")
+                else -> terminal.addOutput("Invalid field: $field")
+            }
+        } else {
+            terminal.addOutput("Invalid show command usage. Example: show project_name")
+        }
+    }
+}
+
+// Authentication (consider moving to a separate class)
+private fun authenticate(): Drive {
+    val keyFilePath = System.getenv(KEY_FILE_PATH_ENV_VAR) ?: "path/to/your/keyfile.json" // Handle missing key file
+    val httpTransport = GoogleNetHttpTransport.newTrustedTransport() // Use trusted transport
+    val jsonFactory = JacksonFactory.getDefaultInstance()
+    val credential = GoogleCredential.fromStream(File(keyFilePath).inputStream())
+        .createScoped(listOf(SCOPES))
+
+    return Drive.Builder(httpTransport, jsonFactory, credential)
+        .setApplicationName("Symbiosis")
+        .build()
+}
+
+// Data Loading (consider moving to a separate class)
+private fun loadLatestProjectData(): ProjectData? {
+    val projectFiles = File(".").listFiles { it.name.matches(Regex(PROJECT_FILE_PATTERN)) }
+    val latestFile = projectFiles?.maxByOrNull { it.lastModified() } ?: return null
+
+    return try {
+        FileReader(latestFile).use { reader ->
+            val json = Json.decodeFromString<JsonObject>(reader.readText())
+            ProjectData(
+                projectName = json["project_name"]?.jsonPrimitive?.content ?: "",
+                version = json["version"]?.jsonPrimitive?.content ?: "",
+                lastUpdated = json["last_updated"]?.jsonPrimitive?.content ?: "",
+                projectGoals = json["project_goals"]?.jsonArray?.map { it.jsonPrimitive.content } ?: emptyList()
+            )
+        }
+    } catch (e: Exception) {
+        println("Error reading project data: ${e.message}")
+        null
+    }
+}
+
+// Asynchronous Data Loading
+suspend fun loadProjectDataAsync(): ProjectData? =
+    withContext(Dispatchers.IO) { loadLatestProjectData() }
+
+fun main() = runBlocking {
+    val driveService = authenticate() // You might not need this immediately
+    val terminal = Terminal()
+    val commandHandler = CommandHandler(terminal)
+
+    val projectData = loadProjectDataAsync()?.also {
+        terminal.addOutput("Project Name: ${it.projectName}", "green")
+        terminal.addOutput("Version: ${it.version}")
+        terminal.addOutput("Last Updated: ${it.lastUpdated}")
+        terminal.addOutput("Project Goals: ${it.projectGoals.joinToString(", ")}")
+    } ?: run {
+        terminal.addOutput("No project data found.", "red")
+        null
+    }
+
+    terminal.addOutput("Welcome to Symbiosis Terminal!", "green")
+    terminal.addOutput("Type 'help' for a list of commands.", "blue")
+
+    while (true) {
+        print("Enter command (type 'exit' to quit): ")
+        val command = readLine() ?: continue
+        terminal.addInput(command)
+
+        if (command.equals("exit", ignoreCase = true)) break
+
+        commandHandler.handleCommand(command, projectData)
+    }
+
+    println("Exiting...")
+}
