@@ -1,0 +1,20 @@
+{  
+  "name": "DeepSeek-R1 Symbiosis",  
+  "version": "0.8.0-alpha",  
+  "modules": [  
+    {  
+      "name": "mod_context",  
+      "type": "core",  
+      "version": "1.0-quantum"  
+    },  
+    {  
+      "name": "mod_dateTime",  
+      "type": "temporal",  
+      "entangled": true  
+    }  
+  ],  
+  "dependencies": [  
+    "QuantumNTP >= 0.4.2",  
+    "TemporalJS >= 2.1.0"  
+  ]  
+}  
