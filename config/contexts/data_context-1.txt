@@ -1,0 +1,10 @@
+{
+     "context_id": "ctx_1.1",
+     "context_name": "JSON_Lab_context",
+     "timestamp": "",
+     "data": {
+       "promptLast": "",
+       "responseLast": "",
+       "logReverseAppended": ''
+     }
+   }
