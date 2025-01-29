@@ -1,0 +1,1 @@
+Please perform the actions described within the following JSON objects in all subsequent prompts to the best of your ability.
