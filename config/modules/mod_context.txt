@@ -1,0 +1,44 @@
+{
+  "instruction": "load_external_context",
+  "parameters": {
+    "action": "fetch_and_validate",
+    "source": {
+      "type": "file",
+      "format": "json",
+      "location": "user_provided" // The user will supply the file in a subsequent prompt
+    },
+    "validation": {
+      "required_fields": ["context_id", "context_name", "timestamp", "data"],
+      "data_types": {
+        "context_id": "string",
+        "context_name": "string",
+        "timestamp": "string", // ISO 8601 format
+        "data": "object" // The actual context data
+      }
+    },
+    "output_format": {
+      "context_id": "string",
+      "context_name": "string",
+      "timestamp": "string",
+      "data": "object"
+    },
+    "error_handling": {
+      "file_not_found": {
+        "code": "ERR_FILE_NOT_FOUND",
+        "message": "The specified context file could not be found."
+      },
+      "invalid_format": {
+        "code": "ERR_INVALID_FORMAT",
+        "message": "The context file is not in the expected JSON format."
+      },
+      "missing_fields": {
+        "code": "ERR_MISSING_FIELDS",
+        "message": "The context file is missing one or more required fields."
+      },
+      "invalid_data_types": {
+        "code": "ERR_INVALID_DATA_TYPES",
+        "message": "One or more fields in the context file have invalid data types."
+      }
+    }
+  }
+}
