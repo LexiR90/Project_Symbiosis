@@ -1,22 +1,20 @@
-```markdown
 # Project_Symbiosis/DeepSeek-R1: Enhancing Context Management for Environmental AI
 
 This project establishes a framework for extending DeepSeek-R1's context management system, specifically tailored for environmental AI applications. It leverages modular JSON configurations, temporal validation, and explores quantum-entangled metadata to support data-intensive environmental monitoring.
 
 ## Project Status
 
-| Component          | Status      | Notes                                                                     |
-|-------------------|-------------|--------------------------------------------------------------------------|
-| Core Modules      | Designed    | JSON specs complete                                                       |
-| CLI Integration   | Mockups     | Requires implementation                                                  |
-| API Endpoints     | Defined     | Needs codegen                                                            |
-| Quantum NTP       | Theoretical | Pending physics review                                                  |
-| Temporal Validation| Partially Mocked | Requires live testing                                                   |
-| Logging Framework | Template Ready | Needs persistence logic                                                 |
+| Component          | Status           | Notes                     |
+|--------------------|------------------|---------------------------|
+| Core Modules       | Designed         | JSON specs complete       |
+| CLI Integration    | Mockups          | Requires implementation   |
+| API Endpoints      | Defined          | Needs codegen             |
+| Quantum NTP        | Theoretical      | Pending physics review    |
+| Temporal Validation| Partially Mocked | Requires live testing     |
+| Logging Framework  | Template Ready   | Needs persistence logic   |
 
 ## File Structure
 
-```
 ~/Project_Symbiosis/DeepSeek-R1/
 ├── LICENSE              # Apache 2.0
 ├── README.md            # Project overview
@@ -38,7 +36,6 @@ This project establishes a framework for extending DeepSeek-R1's context managem
 │   ├── WORKFLOWS.md     # Use-case examples
 │   └── white-paper-draft.md # Project Symbiosis White Paper
 └── examples/            # Sample implementations
-```
 
 ## Key Features
 
@@ -49,7 +46,8 @@ This project establishes a framework for extending DeepSeek-R1's context managem
 
 ## Installation & Usage
 
-```bash
+```
+bash
 # Clone repository
 git clone https://github.com/LexiR90/Project_Symbiosis
 cd Project_Symbiosis/DeepSeek-R1
@@ -84,6 +82,3 @@ We welcome contributions through:
 ---
 
 [View White Paper Draft](./docs/white-paper-draft.md) | [Explore Workflow Examples](./examples) | [Join Our Community](https://discord.gg/example-invite)
-```
-
-This version maintains technical specificity while improving readability and alignment with the white paper's environmental focus. Contains direct clone command to your repo and clear contribution pathways.
