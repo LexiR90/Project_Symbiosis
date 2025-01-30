@@ -8,3 +8,6 @@
 
 ### Data Audit Process  
 - Users may request a SHA-3 hashed audit log quarterly via [...]  
+
+### Legal Review  
+- *Pending consultation with EFF or open-source legal advisor.*  
