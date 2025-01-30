@@ -11,3 +11,4 @@
 
 ### Legal Review  
 - *Pending consultation with EFF or open-source legal advisor.*  
+- Based on [Open Source Initiative’s Privacy Policy Template](https://opensource.org/licenses).  
