@@ -15,6 +15,7 @@ This project establishes a framework for extending DeepSeek-R1's context managem
 
 ## File Structure
 
+```
 ~/Project_Symbiosis/DeepSeek-R1/
 ├── LICENSE              # Apache 2.0
 ├── README.md            # Project overview
@@ -36,6 +37,7 @@ This project establishes a framework for extending DeepSeek-R1's context managem
 │   ├── WORKFLOWS.md     # Use-case examples
 │   └── white-paper-draft.md # Project Symbiosis White Paper
 └── examples/            # Sample implementations
+```
 
 ## Key Features
 
