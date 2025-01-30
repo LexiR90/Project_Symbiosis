@@ -5,3 +5,6 @@
 ### User Rights  
 - Right to audit data usage via [...]  
 - Right to opt-out without penalty.  
+
+### Data Audit Process  
+- Users may request a SHA-3 hashed audit log quarterly via [...]  
