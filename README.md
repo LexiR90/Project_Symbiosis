@@ -72,6 +72,11 @@ deepseek workflow:start --seed ./config/seed.txt
 | Beta    | Q4 2024    | Quantum-Temporal Syncing                 | NGO testnet deployments             |
 | 1.0     | Q2 2025    | Entangled Workflow Orchestration         | Full blockchain integration         |
 
+## Seeking Collaborators  
+- Frontend devs (Svelte/React)  
+- Decentralized storage experts (IPFS, Arweave)  
+- UI/UX designers  
+
 ## Contributing
 
 We welcome contributions through:
